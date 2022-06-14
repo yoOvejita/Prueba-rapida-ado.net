@@ -15,6 +15,7 @@ namespace Prueba_rapida_ado.net
     public partial class Form1 : Form
     {
         //string conexion = @"Server=.\SQLDEVELOPERCQ;DataBase=Instituto X;User=sa;password=123456";
+        DataSet telefonoDS = new DataSet();
         public Form1()
         {
             InitializeComponent();
@@ -211,8 +212,8 @@ namespace Prueba_rapida_ado.net
                             aux += $"{reader["nombre"].ToString()} {reader["apellido"].ToString()}, {reader["ci"].ToString()}\n";
                         }
 
-                        reader.NextResult();
-                        aux = "REGISTROS 2:\n";
+                        reader.NextResult();//Lo podemos poner en WHILE
+                        aux += "REGISTROS 2:\n";
                         while (reader.Read())
                         {
                             aux += $"{reader["nombre"].ToString()}, {reader["sigla"].ToString()}\n";
@@ -227,6 +228,112 @@ namespace Prueba_rapida_ado.net
 
                 }
             }
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            string conexion = ConfigurationManager.ConnectionStrings["CadenaInstitutoX"].ConnectionString;
+            string sql = "SELECT * FROM Telefono;";
+            using (SqlConnection con = new SqlConnection(conexion))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(sql, con))
+                {
+                    try
+                    {
+                        cmd.CommandType = System.Data.CommandType.Text;
+                        SqlDataAdapter telefonoDA = new SqlDataAdapter();
+                        telefonoDA.SelectCommand = cmd;
+
+                        
+                        telefonoDA.Fill(telefonoDS, "Telefono");
+                    }
+                    catch (SqlException ex)
+                    {
+                        //Mostrar alert
+                        Console.WriteLine(ex.StackTrace);
+                    }
+
+                }
+            }
+            
+        }
+
+        private void leer_dataset(object sender, EventArgs e)
+        {
+            //acaba de cerrarse la conexión.
+            richTextBox2.Text = telefonoDS.DataSetName;
+            string cadena = "";
+            foreach (DataRow registro in telefonoDS.Tables["Telefono"].Rows)
+            {
+                cadena += $"{registro[0]}: {registro[1]} - telf.: {registro[2]}\n";
+            }
+            richTextBox2.Text += "\n" + cadena;
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            string conexion = ConfigurationManager.ConnectionStrings["CadenaInstitutoX"].ConnectionString;
+            string sql = "SELECT * FROM Telefono;";
+            using (SqlConnection con = new SqlConnection(conexion))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(sql, con))
+                {
+                    try
+                    {
+                        cmd.CommandType = System.Data.CommandType.Text;
+                        SqlDataAdapter telefonoDA = new SqlDataAdapter();
+                        telefonoDA.SelectCommand = cmd;
+
+
+                        telefonoDA.Fill(telefonoDS, "Telefono");
+                    }
+                    catch (SqlException ex)
+                    {
+                        //Mostrar alert
+                        Console.WriteLine(ex.StackTrace);
+                    }
+
+                }
+                sql = "SELECT * FROM Estudiante;";
+                using (SqlCommand cmd = new SqlCommand(sql, con))
+                {
+                    try
+                    {
+                        cmd.CommandType = System.Data.CommandType.Text;
+                        SqlDataAdapter estDA = new SqlDataAdapter();
+                        estDA.SelectCommand = cmd;
+
+
+                        estDA.Fill(telefonoDS, "Estudiante");
+                    }
+                    catch (SqlException ex)
+                    {
+                        //Mostrar alert
+                        Console.WriteLine(ex.StackTrace);
+                    }
+
+                }
+            }
+        }
+
+        private void cargar_data_set_2(object sender, EventArgs e)
+        {
+            //acaba de cerrarse la conexión.
+            richTextBox3.Text = "";
+            string cadena = "";
+            foreach (DataRow registro in telefonoDS.Tables["Telefono"].Rows)
+            {
+                cadena += $"{registro[0]}: {registro[1]} - telf.: {registro[2]}\n";
+            }
+            cadena += "\n ============= \n";
+
+            foreach (DataRow registro in telefonoDS.Tables["Estudiante"].Rows)
+            {
+                cadena += $"{registro[0]}: {registro[1]} - {registro[2]}\n";
+            }
+            richTextBox3.Text += "\n" + cadena;
         }
     }
 }
