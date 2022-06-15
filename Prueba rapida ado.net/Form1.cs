@@ -335,5 +335,36 @@ namespace Prueba_rapida_ado.net
             }
             richTextBox3.Text += "\n" + cadena;
         }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            string conexion = ConfigurationManager.ConnectionStrings["CadenaInstitutoX"].ConnectionString;
+
+            using (SqlConnection con = new SqlConnection(conexion))
+            {
+                con.Open();
+                //Preparamos un comando listo para UPDATES (sql)
+                SqlCommand cmd = new SqlCommand("UPDATE Telefono SET numero = @n WHERE idTelefono = @id;", con);
+                //Iniciamos un DataAdapter normal
+                SqlDataAdapter telefonoDA = new SqlDataAdapter("SELECT * FROM Telefono;", con);
+                //Le agregamos la sentencia sql de update al DataAdapter
+                telefonoDA.UpdateCommand = cmd;
+                //Agregamos parámetros de update al DataAdapter
+                telefonoDA.UpdateCommand.Parameters.Add("@n", SqlDbType.Int,9,"numero");
+                SqlParameter param = telefonoDA.UpdateCommand.Parameters.Add("@id", SqlDbType.Int);
+                param.SourceColumn = "idTelefono";
+                param.SourceVersion = DataRowVersion.Original;
+
+                //Creamos DataSet normalmente y en adelante podemos modificar campos.
+                DataSet unDS = new DataSet();
+                telefonoDA.Fill(unDS, "Telefono");
+                //Rescatamos el registro en particular.
+                DataRow telefonoRow = unDS.Tables["Telefono"].Rows[0];
+                //Editamos algun campo del registro (row)
+                telefonoRow["numero"] = 80022;
+                //Actualizamos la base de datos
+                telefonoDA.Update(unDS, "Telefono");
+             }
+        }
     }
 }

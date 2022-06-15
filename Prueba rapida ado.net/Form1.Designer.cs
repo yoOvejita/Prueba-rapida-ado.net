@@ -76,9 +76,10 @@
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.button10 = new System.Windows.Forms.Button();
             this.richTextBox3 = new System.Windows.Forms.RichTextBox();
+            this.button10 = new System.Windows.Forms.Button();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.button11 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -526,6 +527,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.button11);
             this.tabPage3.Controls.Add(this.richTextBox3);
             this.tabPage3.Controls.Add(this.button10);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
@@ -534,6 +536,25 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Materia";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // richTextBox3
+            // 
+            this.richTextBox3.Location = new System.Drawing.Point(40, 113);
+            this.richTextBox3.Name = "richTextBox3";
+            this.richTextBox3.Size = new System.Drawing.Size(221, 179);
+            this.richTextBox3.TabIndex = 1;
+            this.richTextBox3.Text = "";
+            this.richTextBox3.MouseEnter += new System.EventHandler(this.cargar_data_set_2);
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(86, 12);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(130, 23);
+            this.button10.TabIndex = 0;
+            this.button10.Text = "Cargar varias tablas";
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // tabPage4
             // 
@@ -544,24 +565,15 @@
             this.tabPage4.Text = "Materia cursada";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // button10
+            // button11
             // 
-            this.button10.Location = new System.Drawing.Point(80, 40);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(75, 23);
-            this.button10.TabIndex = 0;
-            this.button10.Text = "button10";
-            this.button10.UseVisualStyleBackColor = true;
-            this.button10.Click += new System.EventHandler(this.button10_Click);
-            // 
-            // richTextBox3
-            // 
-            this.richTextBox3.Location = new System.Drawing.Point(40, 113);
-            this.richTextBox3.Name = "richTextBox3";
-            this.richTextBox3.Size = new System.Drawing.Size(221, 179);
-            this.richTextBox3.TabIndex = 1;
-            this.richTextBox3.Text = "";
-            this.richTextBox3.MouseEnter += new System.EventHandler(this.cargar_data_set_2);
+            this.button11.Location = new System.Drawing.Point(86, 41);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(96, 23);
+            this.button11.TabIndex = 2;
+            this.button11.Text = "Modificar auto";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
             // Form1
             // 
@@ -648,6 +660,7 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.RichTextBox richTextBox3;
         private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.Button button11;
     }
 }
 
