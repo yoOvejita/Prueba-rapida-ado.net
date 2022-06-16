@@ -366,5 +366,95 @@ namespace Prueba_rapida_ado.net
                 telefonoDA.Update(unDS, "Telefono");
              }
         }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            string conexion = ConfigurationManager.ConnectionStrings["CadenaInstitutoX"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(conexion))
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Connection = con;
+
+                cmd.CommandText = $"CREATE PROCEDURE insertar_estudiante (@ci INT, @nom VARCHAR(50), @ap VARCHAR(50), @fecha DATE) AS INSERT INTO Estudiante (ci, nombre, apellido, fecha_nac) VALUES (@ci, @nom, @ap, @fecha)";
+                cmd.ExecuteNonQuery();
+
+                //cmd.CommandText = "DELETE FROM prueba;";
+                lblInfo.Text = $"Se creó el procedimiento almacenado";
+            }
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            string conexion = ConfigurationManager.ConnectionStrings["CadenaInstitutoX"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(conexion))
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("mat_cursada",con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                string texto = "";
+                while (reader.Read())
+                    texto += $"Estudiante: {reader[1]}, Materia: {reader[2]}, nota: {reader[3]}\n";
+                richTextBox4.Text = texto;
+            }
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            string conexion = ConfigurationManager.ConnectionStrings["CadenaInstitutoX"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(conexion))
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("mat_cursada_by_ci", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@variable", int.Parse(txt_ci.Text)));
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                string texto = "";
+                while (reader.Read())
+                    texto += $"Estudiante: {reader[1]}, Materia: {reader[2]}, nota: {reader[3]}\n";
+                richTextBox4.Text = texto;
+            }
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            string conexion = ConfigurationManager.ConnectionStrings["CadenaInstitutoX"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(conexion))
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("mat_cursada_by_sigla_mincalif", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@sig", txt_sigla.Text));
+                cmd.Parameters.Add(new SqlParameter("@nota", float.Parse(txt_nota.Text)));
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                string texto = "";
+                while (reader.Read())
+                    texto += $"Estudiante: {reader[1]}, Materia: {reader[2]}, nota: {reader[3]}\n";
+                richTextBox4.Text = texto;
+            }
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            string conexion = ConfigurationManager.ConnectionStrings["CadenaInstitutoX"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(conexion))
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("insertar_estudiante", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@ci", int.Parse(textBox1.Text)));
+                cmd.Parameters.Add(new SqlParameter("@nom", textBox2.Text));
+                cmd.Parameters.Add(new SqlParameter("@ap", textBox3.Text));
+                cmd.Parameters.Add(new SqlParameter("@fecha", textBox4.Text));
+                int resultado =  cmd.ExecuteNonQuery();
+                if(resultado > 0)
+                richTextBox4.Text = "Exito";
+            }
+        }
     }
 }
