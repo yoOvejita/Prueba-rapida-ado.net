@@ -456,5 +456,46 @@ namespace Prueba_rapida_ado.net
                 richTextBox4.Text = "Exito";
             }
         }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            string conexion = ConfigurationManager.ConnectionStrings["CadenaInstitutoX"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(conexion))
+            {
+                //con.Open();
+                SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM Telefono",conexion);
+                DataSet ds = new DataSet();
+                adapter.Fill(ds, "Telefono");
+
+                //Creando el nuevo registro
+                int idTelf = int.Parse(textBox7.Text);
+                int codEst = int.Parse(textBox8.Text);
+                int num = int.Parse(textBox9.Text);
+
+                DataRow row = ds.Tables["Telefono"].NewRow();//Hemos creado una nueva fila independiente
+                row["idTelefono"] = idTelf;
+                row["codigoEst"] = codEst;
+                row["numero"] = num;
+                ds.Tables["Telefono"].Rows.Add(row);
+
+                //Actualizando a la base de datos
+                SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
+                adapter.Update(ds.Tables["Telefono"]);
+
+
+                //extra
+                
+                foreach(DataTable tabla in ds.Tables)
+                {
+                    int c = tabla.Columns.Count;
+                    foreach (DataRow fila in tabla.Rows)
+                    {
+                        //Console.WriteLine(fila["numero"].ToString());
+                        for(int i = 0; i< c; i++)
+                            Console.WriteLine(fila.ItemArray[i].ToString());
+                    }
+                }
+            }
+        }
     }
 }
